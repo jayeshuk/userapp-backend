@@ -78,6 +78,7 @@ Replace your_database_host, your_database_user, your_database_password, and your
 
 ### 5. Run the application
 ```bash
+npm i -g nodemon
 npm start
 ```
 
@@ -122,16 +123,18 @@ Response:
 │   ├── config
 │   │   └── db.js
 │   ├── controllers
-│   │   ├── authController.js
-│   ├── middleware
-│   │   └── authMiddleware.js
-│   ├── models
-│   │   └── userModel.js
+│   │   ├── loginController.js
+│   │   ├── registrationController.js
+│   │   ├── testController.js
 │   ├── routes
-│   │   └── authRoutes.js
-│   ├── utils
-│   │   └── jwt.js
-│   └── app.js
+│   │   └── loginRoutes.js
+│   │   └── registrationRoutes.js
+│   │   └── testRoutes.js
+│   └── utils
+│       └── index.js
+├── create_stored_procedures.js
+├── stored_procedures.sql
+├── index.js
 ├── .env
 ├── .gitignore
 ├── package.json
