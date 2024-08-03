@@ -1,5 +1,5 @@
-const utilityFunctions = require("../utilities");
-const connection = require("../../db");
+const utilityFunctions = require("../utils");
+const connection = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
