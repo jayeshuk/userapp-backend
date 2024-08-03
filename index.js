@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 const mysql = require("mysql");
+const testRouter = require("./src/routes/testRoutes")
+const registrationRouter = require("./src/routes/registrationRoutes")
+const loginRouter = require("./src/routes/loginRoutes");
 // const connection = require("./db"); // Connect to DATABSE using external db.js
 
 // Load environment variables
@@ -31,64 +33,9 @@ db.connect((err) => {
 });
 
 // Define routes
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
-
-app.post("/register", async (req, res) => {
-  const { first_name, last_name, mobile_number, password, created_by } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  connection.query(
-    "CALL InsertRegistration(?, ?, ?, ?, ?)",
-    [first_name, last_name, mobile_number, hashedPassword, created_by],
-    (error, results) => {
-      if (error) {
-        return res.status(500).json({ error });
-      }
-      res.status(201).json({ message: "User registered successfully." });
-    }
-  );
-});
-
-app.get("/register/:id", (req, res) => {
-  const { id } = req.params;
-
-  connection.query("CALL SelectRegistration(?)", [id], (error, results) => {
-    if (error) {
-      return res.status(500).json({ error });
-    }
-    res.status(200).json(results[0]);
-  });
-});
-
-app.put("/register/:id", async (req, res) => {
-  const { id } = req.params;
-  const { first_name, last_name, mobile_number, password, updated_by } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  connection.query(
-    "CALL UpdateRegistration(?, ?, ?, ?, ?, ?)",
-    [id, first_name, last_name, mobile_number, hashedPassword, updated_by],
-    (error, results) => {
-      if (error) {
-        return res.status(500).json({ error });
-      }
-      res.status(200).json({ message: "User updated successfully." });
-    }
-  );
-});
-
-app.delete("/register/:id", (req, res) => {
-  const { id } = req.params;
-
-  connection.query("CALL DeleteRegistration(?)", [id], (error, results) => {
-    if (error) {
-      return res.status(500).json({ error });
-    }
-    res.status(200).json({ message: "User deleted successfully." });
-  });
-});
+app.use("/api/v1/test", testRouter);
+app.use("/api/v1/register", registrationRouter)
+app.use("/api/v1/login", loginRouter)
 
 // Start the server
 const PORT = process.env.PORT || 3000;
